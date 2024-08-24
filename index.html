@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stopwatch</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #16203f;
+            color: #fff;
+            text-align: center;
+        }
+        .main {
+            width: 80%;
+            margin: 300px auto;
+            padding: 20px;
+        }
+        .stopwatch {
+            background-color: #44444491;
+            display: inline-block;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        .time {
+            font-size: 3em;
+        }
+        button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 1em;
+            border-radius: 5px;
+            background-color: red;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #ff5555;
+        }
+    </style>
+</head>
+<body>
+    <div class="main">
+    <div class="stopwatch">
+        <div class="time" id="display">00 : 00 : 00</div>
+        <button onclick="start()">Start</button>
+        <button onclick="lap()">Lap</button>
+        <button onclick="stop()">Stop</button>
+        <button onclick="reset()">Reset</button>
+        <div id="laps"></div>
+    </div>
+</div>
+    <script>
+        let timer;
+        let startTime;
+        let lapCount = 1;
+
+        function start() {
+            if (!timer) {
+                startTime = Date.now();
+                timer = setInterval(updateTime, 1000);
+            }
+        }
+
+        function updateTime() {
+            const currentTime = Date.now() - startTime;
+            const hours = Math.floor(currentTime / 3600000);
+            const minutes = Math.floor((currentTime % 3600000) / 60000);
+            const seconds = Math.floor((currentTime % 60000) / 1000);
+            document.getElementById("display").textContent = `${hours} : ${minutes} : ${seconds}`;
+        }
+
+        function lap() {
+            const lapTime = document.getElementById("display").textContent;
+            document.getElementById("laps").innerHTML += `Lap ${lapCount}: ${lapTime}<br>`;
+            lapCount++;
+        }
+
+        function stop() {
+            clearInterval(timer);
+            timer = null;
+        }
+
+        function reset() {
+            clearInterval(timer);
+            timer = null;
+            document.getElementById("display").textContent = "00 : 00 : 00";
+            document.getElementById("laps").innerHTML = "";
+            lapCount = 1;
+        }
+        
+    </script>
+</body>
+</html>
